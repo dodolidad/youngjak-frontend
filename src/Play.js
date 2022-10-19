@@ -1,10 +1,5 @@
-function Play() {
-    return (
-      <div>
-        Ask.js
-      </div>
-    );
-  }
-  
-  export default Play;
-  
+export default function Play() {
+  return (
+    <div>Play</div>
+  )
+}

@@ -73,17 +73,10 @@ export default function BasicTextFields() {
       <TextField id="outlined-basic" label="답변(비밀번호 찾기용)" variant="outlined" 
         onChange={(e) => chgPwdAnsRef.current = (e.target.value)}
       />
-      <Link style={{ textDecoration: 'none' }}>
-      <Button size="large" onClick={tryJoin} fullWidth color="success" variant="contained" endIcon={<InsertEmoticonIcon />}>
-        가입
-      </Button>
-      </Link>
-      <Link to="/home" style={{ textDecoration: 'none' }}>
-      <Button variant="outlined" endIcon={<HomeIcon />}>
-        홈
-      </Button>
-      </Link>
     </Box>
+    <Button size="large" onClick={tryJoin} fullWidth color="success" variant="contained" endIcon={<InsertEmoticonIcon />}>
+      가입
+    </Button>
     <CommAlert ref={CommAlertRef} type={commAlertType} msg={commAlertMsg} />
     </>
   );
