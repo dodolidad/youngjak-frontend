@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import HomeIcon from '@mui/icons-material/Home';
+// import HomeIcon from '@mui/icons-material/Home';
 import Button from '@mui/material/Button';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import axios from 'axios';
 import CommAlert from './CommAlert';
+import Play from './Play';
 
-export default function BasicTextFields() {
+export default function Join(props) {
+  console.log(props);
   const userIdRef = React.useRef('');
   const userPwdRef = React.useRef('');
   const userPwdAgainRef = React.useRef('');
@@ -22,7 +23,7 @@ export default function BasicTextFields() {
 
   const tryJoin = () => {
     if(userPwdRef.current !== userPwdAgainRef.current) {
-      commAlertType.current ='Error'
+      commAlertType.current = 'Error';
       commAlertMsg.current = '비밀번호와 비밀번호 확인이 불일치합니다.';
       CommAlertRef.current.handleClickOpen();
       return;
@@ -39,6 +40,8 @@ export default function BasicTextFields() {
       commAlertType.current = res.data.success === true ? 'Success' : 'Error'
       commAlertMsg.current = res.data.msg;
       CommAlertRef.current.handleClickOpen();
+      props.setPageComp(<Play />)
+      
     })
     .catch((err) => {
       commAlertType.current ='Error'

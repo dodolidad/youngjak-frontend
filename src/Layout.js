@@ -16,8 +16,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+// import InboxIcon from '@mui/icons-material/MoveToInbox';
+// import MailIcon from '@mui/icons-material/Mail';
 import Button from '@mui/material/Button';
 import Login from './Login';
 import LoginIcon from '@mui/icons-material/Login';
@@ -32,17 +32,18 @@ import Join from './Join';
 export default function PersistentDrawerLeft() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [path, setPath] = React.useState();
+  const [pageComp, setPageComp] = React.useState();
   const LoginRef = React.useRef();
 
-  const pathToComp = (path) => {
-    if(path === null || path === 'home') setPath(<Home />);
-    else if(path === 'play') setPath(<Play />);
-    else if(path === 'join') setPath(<Join />);
+  const pageHandler = (path) => {
+    if(path === null || path === 'home') setPageComp(<Home setPageComp={setPageComp} />);
+    else if(path === 'play') setPageComp(<Play setPageComp={setPageComp} />);
+    else if(path === 'join') setPageComp(<Join setPageComp={setPageComp} />);
+    else setPageComp(<Home setPageComp={setPageComp} />);
   }
 
   React.useEffect(()=>{
-    pathToComp(localStorage.getItem('youngjakPath'));
+    pageHandler(localStorage.getItem('YOUNGJAK_PATH'));
   },[])
 
   const openLoginPage = () => {
@@ -99,7 +100,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           <ListItem disablePadding onClick={handleDrawerClose}>
-            <ListItemButton onClick={() => pathToComp('play')}>
+            <ListItemButton onClick={() => pageHandler('play')}>
               <ListItemIcon>
                 <PlayCircleOutlineIcon style={{ color: "blue" }}/>
               </ListItemIcon>
@@ -107,7 +108,7 @@ export default function PersistentDrawerLeft() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding onClick={handleDrawerClose}>
-            <ListItemButton onClick={() => pathToComp('play')}>
+            <ListItemButton onClick={() => pageHandler('play')}>
               <ListItemIcon>
                 <MenuBookIcon style={{ color: "green" }}/>
               </ListItemIcon>
@@ -127,7 +128,7 @@ export default function PersistentDrawerLeft() {
         </List>
         <Divider />
         <ListItem disablePadding onClick={handleDrawerClose}>
-            <ListItemButton onClick={() => pathToComp('home')}>
+            <ListItemButton onClick={() => pageHandler('home')}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
@@ -135,7 +136,7 @@ export default function PersistentDrawerLeft() {
             </ListItemButton>
           </ListItem>
         <ListItem disablePadding onClick={handleDrawerClose}>
-            <ListItemButton onClick={() => pathToComp('join')}>
+            <ListItemButton onClick={() => pageHandler('join')}>
               <ListItemIcon>
                 <InsertEmoticonIcon />
               </ListItemIcon>
@@ -157,7 +158,7 @@ export default function PersistentDrawerLeft() {
       </Drawer>
       <Main>
         <DrawerHeader />
-        {path}
+        {pageComp}
       </Main>
     </Box>
     <Login ref={LoginRef} />
