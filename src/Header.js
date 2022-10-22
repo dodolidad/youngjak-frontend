@@ -24,6 +24,8 @@ export default function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const CommAlertRef = React.useRef();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -128,103 +130,4 @@ export default function Header() {
       </Menu>
     </React.Fragment>
   );
-
-
-    // <Box sx={{ flexGrow: 1 }}>
-    //   <AppBar>
-    //     <Toolbar>
-    //       <IconButton
-    //         size="large"
-    //         edge="start"
-    //         color="inherit"
-    //         aria-label="menu"
-    //         sx={{ mr: 2 }}
-    //         onClick={toggleDrawer(true)}
-    //       >
-    //         <MenuIcon />
-    //       </IconButton>
-    //       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-    //         News
-    //       </Typography>
-    //       <Button color="inherit">Login</Button>
-    //     </Toolbar>
-    //     <Drawer
-    //       anchor='left'
-    //       open={open}
-    //       onClose={toggleDrawer(false)}
-    //       sx={{
-    //         width: 200,
-    //         flexShrink: 0,
-    //         '& .MuiDrawer-paper': {
-    //           width: 200,
-    //           boxSizing: 'border-box',
-    //         },
-    //       }}
-    //     >
-    //       <DrawerHeader onClick={toggleDrawer(false)}>
-    //         <IconButton onClick={toggleDrawer(false)}>
-    //           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-    //         </IconButton>
-    //       </DrawerHeader>
-    //       <Divider />
-    //       <List>
-    //         <ListItem onClick={abc} disablePadding>
-    //           <ListItemButton>
-    //             <ListItemIcon>
-    //               <PlayCircleOutlineIcon style={{ color: "blue" }}/>
-    //             </ListItemIcon>
-    //             <ListItemText style={{ color: "blue" }} primary='Play' />
-    //           </ListItemButton>
-    //         </ListItem>
-    //         <ListItem onClick={toggleDrawer(false)} disablePadding>
-    //           <ListItemButton>
-    //             <ListItemIcon>
-    //               <MenuBookIcon style={{ color: "green" }}/>
-    //             </ListItemIcon>
-    //             <ListItemText style={{ color: "green" }} primary='My Book' />
-    //           </ListItemButton>
-    //         </ListItem>
-    //         {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-    //           <ListItem key={text} disablePadding>
-    //             <ListItemButton>
-    //               <ListItemIcon>
-    //                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-    //               </ListItemIcon>
-    //               <ListItemText primary={text} />
-    //             </ListItemButton>
-    //           </ListItem>
-    //         ))} */}
-    //       </List>
-    //       <Divider />
-    //       <ListItem onClick={toggleDrawer(false)} disablePadding>
-    //           <ListItemButton>
-    //             <ListItemIcon>
-    //               <HomeIcon />
-    //             </ListItemIcon>
-    //             <ListItemText primary="Home" />
-    //           </ListItemButton>
-    //         </ListItem>
-    //       <ListItem onClick={toggleDrawer(false)} disablePadding>
-    //         <ListItemButton>
-    //           <ListItemIcon>
-    //             <InsertEmoticonIcon />
-    //           </ListItemIcon>
-    //           <ListItemText primary='회원가입' />
-    //         </ListItemButton>
-    //       </ListItem>
-    //       {/* <List>
-    //         {['All mail', 'Trash', 'Spam'].map((text, index) => (
-    //           <ListItem key={text} disablePadding>
-    //             <ListItemButton>
-    //               <ListItemIcon>
-    //                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-    //               </ListItemIcon>
-    //               <ListItemText primary={text} />
-    //             </ListItemButton>
-    //           </ListItem>
-    //         ))}
-    //       </List> */}
-    //     </Drawer>
-    //   </AppBar>
-    // </Box>
 }

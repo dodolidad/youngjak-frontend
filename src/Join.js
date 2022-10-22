@@ -8,7 +8,7 @@ import axios from 'axios';
 import CommAlert from './CommAlert';
 import Play from './Play';
 
-export default function Join(props) {
+function Join(props, ref) {
   console.log(props);
   const userIdRef = React.useRef('');
   const userPwdRef = React.useRef('');
@@ -16,16 +16,11 @@ export default function Join(props) {
   const chgPwdQstRef = React.useRef('');
   const chgPwdAnsRef = React.useRef('');
 
-  const CommAlertRef = React.useRef(); 
-
-  let commAlertType = React.useRef('');
-  let commAlertMsg = React.useRef('');
-
   const tryJoin = () => {
     if(userPwdRef.current !== userPwdAgainRef.current) {
-      commAlertType.current = 'Error';
-      commAlertMsg.current = '비밀번호와 비밀번호 확인이 불일치합니다.';
-      CommAlertRef.current.handleClickOpen();
+      // commAlertType.current = 'Error';
+      // commAlertMsg.current = '비밀번호와 비밀번호 확인이 불일치합니다.';
+      // CommAlertRef.current.handleClickOpen();
       return;
     }
 
@@ -37,16 +32,16 @@ export default function Join(props) {
     })
     .then((res) => {
       console.log(res);
-      commAlertType.current = res.data.success === true ? 'Success' : 'Error'
-      commAlertMsg.current = res.data.msg;
-      CommAlertRef.current.handleClickOpen();
+      // commAlertType.current = res.data.success === true ? 'Success' : 'Error'
+      // commAlertMsg.current = res.data.msg;
+      // CommAlertRef.current.handleClickOpen();
       props.setPageComp(<Play />)
       
     })
     .catch((err) => {
-      commAlertType.current ='Error'
-      commAlertMsg.current = '데이터 처리 실패. 다시 시도하세요.';
-      CommAlertRef.current.handleClickOpen();
+      // commAlertType.current ='Error'
+      // commAlertMsg.current = '데이터 처리 실패. 다시 시도하세요.';
+      // CommAlertRef.current.handleClickOpen();
     });
   }
 
@@ -80,7 +75,8 @@ export default function Join(props) {
     <Button size="large" onClick={tryJoin} fullWidth color="success" variant="contained" endIcon={<InsertEmoticonIcon />}>
       가입
     </Button>
-    <CommAlert ref={CommAlertRef} type={commAlertType} msg={commAlertMsg} />
     </>
   );
 }
+
+export default React.forwardRef(Join);

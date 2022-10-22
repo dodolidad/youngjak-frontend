@@ -13,9 +13,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function CommAlert(props, ref) {
   const [open, setOpen] = React.useState(false);
+  const [commAlertType, setCommAlertType] = React.useState();
+  const [commAlertMsg, setCommAlertMsg] = React.useState();
 
   React.useImperativeHandle(ref, () => ({
-    handleClickOpen
+    handleClickOpen,
+    setCommAlertType,
+    setCommAlertMsg
   }));
 
   const handleClickOpen = () => {
@@ -36,10 +40,10 @@ function CommAlert(props, ref) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{props.type.current}</DialogTitle>
+        <DialogTitle>{commAlertType}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {props.msg.current}
+            {commAlertMsg}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
