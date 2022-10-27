@@ -5,18 +5,6 @@ import Button from '@mui/material/Button';
 import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
 import { useNavigate } from "react-router-dom";
 import CampaignIcon from '@mui/icons-material/Campaign';
-import Avatar from '@mui/material/Avatar';
-import { deepOrange, green, blue, purple } from '@mui/material/colors';
-import HeadphonesIcon from '@mui/icons-material/Headphones';
-import Stack from '@mui/material/Stack';
-import axios from 'axios';
-import CommAlert from './CommAlert';
-import TtsPlayer from './TtsPlayer';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Accordion from '@mui/material/Accordion';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import TextField from '@mui/material/TextField';
 
 function Home(props, ref) {

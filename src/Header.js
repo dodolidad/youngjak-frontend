@@ -20,11 +20,10 @@ import { deepOrange, green, blue } from '@mui/material/colors';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 import HomeIcon from '@mui/icons-material/Home';
 
-export default function Header() {
+function Header(props, ref) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const CommAlertRef = React.useRef();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +53,7 @@ export default function Header() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               youngjak.com
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button onClick={props.openLogin} color="inherit">Login</Button>
           </Toolbar>
         </AppBar>
       </Box>
@@ -131,3 +130,5 @@ export default function Header() {
     </React.Fragment>
   );
 }
+
+export default React.forwardRef(Header)

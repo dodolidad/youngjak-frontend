@@ -2,19 +2,16 @@ import * as React from 'react';
 import axios from 'axios';
 
 function TtsPlayer(props, ref) {
-  const audioCtx = new AudioContext(window.AudioContext || window.webkitAudioContext);
   let source;
-  const [text, setText] = React.useState('');
-  const [lang, setLang] = React.useState('');
-  const [voice, setVoice] = React.useState('');
   
   React.useImperativeHandle(ref, () => ({
     play
   }));
 
   const play = async (text, lang, voice) => {
+    const audioCtx = new AudioContext(window.AudioContext || window.webkitAudioContext);
     console.log(source);
-    const response = await axios.get(process.env.REACT_APP_API_URL + '/tts', {
+    await axios.get(process.env.REACT_APP_API_URL + '/tts', {
       params: {
         text: text,
         lang: lang,
