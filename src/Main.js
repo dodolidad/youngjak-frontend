@@ -8,15 +8,16 @@ import MyBook from './MyBook';
 import CommAlert from './CommAlert';
 import TtsPlayer from './TtsPlayer';
 import Login from './Login';
+import PrivateRoute from './PrivateRoute';
 
 export default function Main() {
   console.log('Main.js rendering');
-  const HeaderRef = React.useRef();
+  const headerRef = React.useRef();
   const commAlertRef = React.useRef();
   const homeRef = React.useRef();
-  const TtsPlayerRef = React.useRef();
-  const LoginRef = React.useRef();
-  const JoinRef = React.useRef();
+  const ttsPlayerRef = React.useRef();
+  const loginRef = React.useRef();
+  const joinRef = React.useRef();
   
   const openCommAlert = (commAlertType, commAlertMsg) => {
     console.log('commAlertType' + commAlertType);
@@ -27,25 +28,21 @@ export default function Main() {
   }
 
   const play = (text, lang, voice) => {
-    TtsPlayerRef.current.play(text, lang, voice);
-  }
-
-  const openLogin = () => {
-    LoginRef.current.handleClickOpen();
+    ttsPlayerRef.current.play(text, lang, voice);
   }
 
   return (
     <BrowserRouter>
-      <Header ref={HeaderRef} openCommAlert={openCommAlert} openLogin={openLogin} />
+      <Header ref={headerRef} openCommAlert={openCommAlert} />
       <Routes>
-        <Route path="/*" element={<Home ref={homeRef} openCommAlert={openCommAlert} play={play} />}></Route>
-        <Route path="/join" element={<Join ref={JoinRef} openCommAlert={openCommAlert} openLogin={openLogin} />}></Route>
-        <Route path="/listen" element={<Listen />}></Route>
-        <Route path="/mybook" element={<MyBook />}></Route>
+        <Route path="/*" element={ <Home ref={homeRef} openCommAlert={openCommAlert} play={play} /> }></Route>
+        <Route path="/join" element={ <Join ref={joinRef} openCommAlert={openCommAlert} /> }></Route>
+        <Route path="/login" element={ <Login ref={loginRef} openCommAlert={openCommAlert} /> }></Route>
+        <Route path="/listen" element={ <PrivateRoute comp={<Listen openCommAlert={openCommAlert} play={play} />} /> }></Route>
+        <Route path="/mybook" element={ <PrivateRoute comp={<MyBook openCommAlert={openCommAlert} />} /> }></Route>
       </Routes>
       <CommAlert ref={commAlertRef} />
-      <TtsPlayer ref={TtsPlayerRef} openCommAlert={openCommAlert} />
-      <Login ref={LoginRef} openCommAlert={openCommAlert} />
+      <TtsPlayer ref={ttsPlayerRef} openCommAlert={openCommAlert} />
     </BrowserRouter>
   )
 }

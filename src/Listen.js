@@ -1,138 +1,118 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import MuiAccordion from '@mui/material/Accordion';
-import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+import CampaignIcon from '@mui/icons-material/Campaign';
+import TextField from '@mui/material/TextField';
+
+// import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import axios from 'axios';
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  '&:not(:last-child)': {
-    borderBottom: 0,
-  },
-  '&:before': {
-    display: 'none',
-  },
-}));
+function Listen(props) {
+  const navigate = useNavigate();
+  const [textKr, setTextKr] = React.useState('안녕하세요. 재생하기 버튼을 클릭해보세요.');
+  const [textEn, setTextEn] = React.useState('');
+  const [sentenceType, setSentenceType] = React.useState('MYTEXT');
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
-      : 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)',
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: '1px solid rgba(0, 0, 0, .125)',
-}));
-
-export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = React.useState('panel1');
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-  // const [audioSource, setAudioSource] = React.useState('');
-
-  const requestAudioFile = async () => {
-    const response = await axios.get(process.env.REACT_APP_API_URL + '/listen', {
-      params: {
-      text: 'My name is Jain.',
-      lang: 'en-US',
-      voice: 'FEMALE',
-      },
-      responseType : 'arraybuffer'
+  const trySetText = () => {
+    axios.post(process.env.REACT_APP_API_URL + '/setText', {
+      token: localStorage.getItem('token'),
+      textKr: textKr,
+      textEn : textEn,
     })
-    .then(async(res) => {
-      console.log('res');
+    .then((res) => {
       console.log(res);
+      if(res.data.success === true) {
+        props.openCommAlert('Success', res.data.msg);
+      }
+      else {
+        if(res.data.errName === 'JWT_FAIL') {
 
-      const audioContext = new AudioContext(window.AudioContext);
+          localStorage.removeItem('token');
 
-      // makeAudio(response)
-      const audioBuffer = await audioContext.decodeAudioData(res.data);
+          props.openCommAlert('Error', res.data.msg);
 
-      //create audio source
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.start();
+          navigate('/login');
+        } else {
+          props.openCommAlert('Error', res.data.msg);
+        }
+      }
     })
     .catch((err) => {
-      console.log('err');
       console.log(err);
+      props.openCommAlert('Error', '데이터 처리 실패. 다시 시도하세요.');
     });
   }
 
-  function ddd() {
-    requestAudioFile();
-  }
-
-  return (
+  return(
     <React.Fragment>
-    <div>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Collapsible Group Item #1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Collapsible Group Item #2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-    </div>
-    <div>
-      Example1
-      <button onClick={ddd}>fd</button>
-    </div>
+      <Typography variant="h4" gutterBottom></Typography>
+      <Box sx={{ width: '100%' }}>
+        <Typography variant="h4" gutterBottom>  
+          Welcome!
+        </Typography>
+      </Box>
+      <Box textAlign="right">
+
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          {/* <InputLabel id="demo-simple-select-standard-label">Age</InputLabel> */}
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={sentenceType}
+            onChange={(e) => setSentenceType(e.target.value)}
+            // label="Age"
+          >
+            <MenuItem value='SUGGEST'>제안</MenuItem>
+            <MenuItem value='MYTEXT'>My Text</MenuItem>
+            <MenuItem value='ALL'>All</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button onClick={() => props.play(textEn, 'en', 'female')} color="success" variant="contained" endIcon={<CampaignIcon />}>
+          재생하기
+        </Button>
+
+      </Box>
+
+      <Typography variant="h6" gutterBottom></Typography>
+
+      <TextField
+        label="한국어"
+        fullWidth
+        multiline
+        minRows="2"
+        defaultValue={textKr}
+        onChange={(e) => setTextKr(e.target.value)}
+      />
+
+      <Typography variant="h4" gutterBottom></Typography>
+
+      <TextField
+          label="영어"
+          fullWidth
+          multiline
+          minRows="2"
+          defaultValue={textEn}
+          onChange={(e) => setTextEn(e.target.value)}
+      />
+
+      <Typography variant="h4" gutterBottom></Typography>
+
+      <Box textAlign="right">
+
+        <Button onClick={ trySetText } color="success" variant="contained" endIcon={<CampaignIcon />}>
+          신규등록
+        </Button>
+
+      </Box>
+
     </React.Fragment>
-  );
+  )
 }
+
+export default Listen;

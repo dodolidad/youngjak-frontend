@@ -32,6 +32,22 @@ function Header(props, ref) {
     setAnchorEl(null);
   };
 
+  const tryLogout = () => {
+    console.log('tryLogout');
+    localStorage.removeItem('token');
+    navigate('/')
+  }
+
+  // if(token === null || token === '')
+
+  let button;
+  const token = localStorage.getItem('token');
+  if (token === null || token === '') {
+    button = <Button onClick={() => navigate('/login')} color="inherit">Login</Button>
+  } else {
+    button = <Button onClick={() => tryLogout()} color="inherit">Logout</Button>
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -53,7 +69,8 @@ function Header(props, ref) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               youngjak.com
             </Typography>
-            <Button onClick={props.openLogin} color="inherit">Login</Button>
+            {button}
+            {/* <Button onClick={() => navigate('/login')} color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
       </Box>

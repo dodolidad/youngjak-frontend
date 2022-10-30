@@ -20,7 +20,7 @@ function Join(props, ref) {
       props.openCommAlert('Error', '비밀번호와 비밀번호 확인이 불일치합니다.');
       return;
     }
-
+    
     axios.post(process.env.REACT_APP_API_URL + '/join', {
       userId: userIdRef.current,
       userPwd : userPwdRef.current,   
@@ -30,14 +30,12 @@ function Join(props, ref) {
     .then((res) => {
       console.log(res);
 
-      //props.openCommAlert(res.data.success === true ? '회원가입 완료' : 'Error', res.data.msg);
+      props.openCommAlert(res.data.success === true ? '회원가입 완료' : 'Error', res.data.msg);
 
       if(res.data.success === true) {
         alert('회원가입 완료');
 
         navigate('/');
-
-        props.openLogin();
       }
     })
     .catch((err) => {
