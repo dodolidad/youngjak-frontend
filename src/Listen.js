@@ -16,10 +16,41 @@ function Listen(props) {
   const navigate = useNavigate();
   const [textKr, setTextKr] = React.useState('안녕하세요. 재생하기 버튼을 클릭해보세요.');
   const [textEn, setTextEn] = React.useState('');
-  const [sentenceType, setSentenceType] = React.useState('MYTEXT');
+  const [textType, setTextType] = React.useState('MYTEXT');
 
   const trySetText = () => {
     axios.post(process.env.REACT_APP_API_URL + '/setText', {
+      token: localStorage.getItem('token'),
+      token1: localStorage.getItem('token1'),
+      textKr: textKr,
+      textEn : textEn,
+    })
+    .then((res) => {
+      console.log(res);
+      if(res.data.success === true) {
+        props.openCommAlert('Success', res.data.msg);
+      }
+      else {
+        if(res.data.errName === 'JWT_FAIL') {
+
+          localStorage.clear();
+
+          props.openCommAlert('Error', res.data.msg);
+
+          navigate('/login');
+        } else {
+          props.openCommAlert('Error', res.data.msg);
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      props.openCommAlert('Error', '데이터 처리 실패. 다시 시도하세요.');
+    });
+  }
+
+  const trySetMyText = () => {
+    axios.post(process.env.REACT_APP_API_URL + '/setMyText', {
       token: localStorage.getItem('token'),
       textKr: textKr,
       textEn : textEn,
@@ -32,7 +63,63 @@ function Listen(props) {
       else {
         if(res.data.errName === 'JWT_FAIL') {
 
-          localStorage.removeItem('token');
+          localStorage.clear();
+
+          props.openCommAlert('Error', res.data.msg);
+
+          navigate('/login');
+        } else {
+          props.openCommAlert('Error', res.data.msg);
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      props.openCommAlert('Error', '데이터 처리 실패. 다시 시도하세요.');
+    });
+  }
+
+  let writeButton;
+  const token1 = localStorage.getItem('token1');
+  if (token1 === null || token1 === '') {
+  } else {
+    writeButton = <Button onClick={ trySetText } color="success" variant="contained" endIcon={<CampaignIcon />}>
+      신규등록
+    </Button>
+  }
+
+  let myTextButton;
+  const token = localStorage.getItem('token');
+  if (token === null || token === '') {
+  } else {
+    myTextButton = <Button onClick={ trySetMyText } color="success" variant="contained" endIcon={<CampaignIcon />}>
+      내 문장으로 저장
+    </Button>
+  }
+
+  const play = () => {
+    let apiPath = '';
+
+    if(textType === 'SUGGEST') {
+      apiPath = '/getSuggestTextOneRandom';
+    }else if(textType === 'MYTEXT') {
+      apiPath = '/getMyTextOneRandom';
+    }else if(textType === 'ALL') {
+      apiPath = '/getAllTextOneRandom';
+    }
+
+    axios.get(process.env.REACT_APP_API_URL + apiPath, {
+      token: localStorage.getItem('token')
+    })
+    .then((res) => {
+      console.log(res);
+      if(res.data.success === true) {
+        props.openCommAlert('Success', res.data.msg);
+      }
+      else {
+        if(res.data.errName === 'JWT_FAIL') {
+
+          localStorage.clear();
 
           props.openCommAlert('Error', res.data.msg);
 
@@ -63,8 +150,8 @@ function Listen(props) {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={sentenceType}
-            onChange={(e) => setSentenceType(e.target.value)}
+            value={textType}
+            onChange={(e) => setTextType(e.target.value)}
             // label="Age"
           >
             <MenuItem value='SUGGEST'>제안</MenuItem>
@@ -73,7 +160,7 @@ function Listen(props) {
           </Select>
         </FormControl>
 
-        <Button onClick={() => props.play(textEn, 'en', 'female')} color="success" variant="contained" endIcon={<CampaignIcon />}>
+        <Button onClick={play} color="success" variant="contained" endIcon={<CampaignIcon />}>
           재생하기
         </Button>
 
@@ -104,10 +191,8 @@ function Listen(props) {
       <Typography variant="h4" gutterBottom></Typography>
 
       <Box textAlign="right">
-
-        <Button onClick={ trySetText } color="success" variant="contained" endIcon={<CampaignIcon />}>
-          신규등록
-        </Button>
+        {myTextButton}
+        {writeButton}
 
       </Box>
 

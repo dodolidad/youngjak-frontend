@@ -34,7 +34,7 @@ function Header(props, ref) {
 
   const tryLogout = () => {
     console.log('tryLogout');
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate('/')
   }
 

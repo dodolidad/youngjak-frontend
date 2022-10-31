@@ -16,7 +16,7 @@ function Home(props, ref) {
   const navigate = useNavigate();
   const [textKr, setTextKr] = React.useState('안녕하세요. 재생하기 버튼을 클릭해보세요.');
   const [textEn, setTextEn] = React.useState('');
-  const [sentenceType, setSentenceType] = React.useState('SUGGEST');
+  const [textType, setTextType] = React.useState('SUGGEST');
 
   return (
     <React.Fragment>
@@ -41,13 +41,13 @@ function Home(props, ref) {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={sentenceType}
-            onChange={(e) => setSentenceType(e.target.value)}
+            value={textType}
+            onChange={(e) => setTextType(e.target.value)}
             // label="Age"
           >
             <MenuItem value='SUGGEST'>제안</MenuItem>
             <MenuItem value='MYTEXT' disabled>My Text</MenuItem>
-            <MenuItem value='ALL' disabled>All</MenuItem>
+            <MenuItem value='ALL'>All</MenuItem>
           </Select>
         </FormControl>
 

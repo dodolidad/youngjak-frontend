@@ -18,6 +18,7 @@ export default function Main() {
   const ttsPlayerRef = React.useRef();
   const loginRef = React.useRef();
   const joinRef = React.useRef();
+  const privateRouteRef = React.useRef();
   
   const openCommAlert = (commAlertType, commAlertMsg) => {
     console.log('commAlertType' + commAlertType);
@@ -38,8 +39,8 @@ export default function Main() {
         <Route path="/*" element={ <Home ref={homeRef} openCommAlert={openCommAlert} play={play} /> }></Route>
         <Route path="/join" element={ <Join ref={joinRef} openCommAlert={openCommAlert} /> }></Route>
         <Route path="/login" element={ <Login ref={loginRef} openCommAlert={openCommAlert} /> }></Route>
-        <Route path="/listen" element={ <PrivateRoute comp={<Listen openCommAlert={openCommAlert} play={play} />} /> }></Route>
-        <Route path="/mybook" element={ <PrivateRoute comp={<MyBook openCommAlert={openCommAlert} />} /> }></Route>
+        <Route path="/listen" element={ <PrivateRoute ref={privateRouteRef} openCommAlert={openCommAlert} comp={<Listen openCommAlert={openCommAlert} play={play} />} /> }></Route>
+        <Route path="/mybook" element={ <PrivateRoute ref={privateRouteRef} openCommAlert={openCommAlert} comp={<MyBook openCommAlert={openCommAlert} />} /> }></Route>
       </Routes>
       <CommAlert ref={commAlertRef} />
       <TtsPlayer ref={ttsPlayerRef} openCommAlert={openCommAlert} />

@@ -19,7 +19,9 @@ function Login(props, ref) {
     .then((res) => {
       console.log(res);
       if(res.data.success === true) {
+        console.log(res);
         localStorage.setItem('token', res.data.token);
+        if(res.data.token1) localStorage.setItem('token1', res.data.token1);
 
         navigate('/listen');
       }
