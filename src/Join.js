@@ -7,7 +7,6 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import axios from 'axios';
 
 function Join(props, ref) {
-  console.log(props);
   const navigate = useNavigate();
   const userIdRef = React.useRef();
   const userPwdRef = React.useRef();
@@ -28,13 +27,9 @@ function Join(props, ref) {
       chgPwdAns: chgPwdAnsRef.current
     })
     .then((res) => {
-      console.log(res);
-
       props.openCommAlert(res.data.success === true ? '회원가입 완료' : 'Error', res.data.msg);
 
       if(res.data.success === true) {
-        alert('회원가입 완료');
-
         navigate('/');
       }
     })

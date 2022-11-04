@@ -13,11 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { deepOrange, green, blue } from '@mui/material/colors';
-import HeadphonesIcon from '@mui/icons-material/Headphones';
+import { deepOrange, green } from '@mui/material/colors';
 import HomeIcon from '@mui/icons-material/Home';
 
 function Header(props, ref) {
@@ -33,19 +30,20 @@ function Header(props, ref) {
   };
 
   const tryLogout = () => {
-    console.log('tryLogout');
     localStorage.clear();
     navigate('/')
   }
 
   // if(token === null || token === '')
 
-  let button;
+  let btnLogInOut;
+  let btnJoin;
   const token = localStorage.getItem('token');
   if (token === null || token === '') {
-    button = <Button onClick={() => navigate('/login')} color="inherit">Login</Button>
+    btnLogInOut = <Button onClick={() => navigate('/login')} color="inherit">로그인</Button>
+    btnJoin = <Button onClick={() => navigate('/join')} color="inherit">회원가입</Button>
   } else {
-    button = <Button onClick={() => tryLogout()} color="inherit">Logout</Button>
+    btnLogInOut = <Button onClick={() => tryLogout()} color="inherit">로그아웃</Button>
   }
 
   return (
@@ -69,7 +67,8 @@ function Header(props, ref) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               youngjak.com
             </Typography>
-            {button}
+            {btnJoin}
+            {btnLogInOut}
             {/* <Button onClick={() => navigate('/login')} color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
@@ -109,39 +108,22 @@ function Header(props, ref) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => navigate('/listen')}>
-          <Avatar sx={{ bgcolor: deepOrange[500] }} variant="rounded">
-            <HeadphonesIcon />
-          </Avatar> Listen to
-        </MenuItem>
-        <MenuItem onClick={() => navigate('/mybook')}>
-          <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
-            <AssignmentIcon />
-          </Avatar> My book
-        </MenuItem>
         <MenuItem onClick={() => navigate('/home')}>
-          <Avatar sx={{ bgcolor: blue[500] }} variant="rounded">
+          <Avatar sx={{ bgcolor: deepOrange[500] }} variant="rounded">
             <HomeIcon />
           </Avatar> Home
+        </MenuItem>
+        <MenuItem onClick={() => navigate('/mytext')}>
+          <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
+            <AssignmentIcon />
+          </Avatar> My Text
         </MenuItem>
         <Divider />
         <MenuItem>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
+          내 정보
         </MenuItem>
       </Menu>
     </React.Fragment>
