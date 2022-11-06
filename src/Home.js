@@ -21,9 +21,10 @@ function Home(props, ref) {
   const [textKrState, setTextKrState] = React.useState('안녕하세요. 재생 버튼을 클릭해보세요.');
   const [textEnState, setTextEnState] = React.useState('Hello.');
   const interv = React.useRef(0);
-  const textType = React.useRef('SUGGEST');
+  const [textTypeState, setTextTypeState] = React.useState('SUGGEST');
   const [isPlayng, setIsPlayng] = React.useState(false);
   const source = React.useRef();
+  // const audioCtx = React.useRef(new (window.AudioContext || window.webkitAudioContext)());
   const audioCtx = React.useRef();
   // let audioCtx;
   // let source;
@@ -32,10 +33,23 @@ function Home(props, ref) {
   const textIdxRef = React.useRef(1);
   const timer = React.useRef();
 
+  React.useEffect(() => {
+    // audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+
+    return () => {
+      stopSound();
+    };
+  }, []);
+
   const play = async() => {
     setIsPlayng(true);
 
     audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtx.current.createGain();
+    // if(audioCtx.current.state === 'suspended') { audioCtx.current.resume() };
+    // audioCtx.current.resume();
+    // audioCtx.current.onstatechange = () => {alert(audioCtx.current.state === 'suspended')};
+    // audioCtx.current.onstatechange = () => {alert(audioCtx.current.state); if(audioCtx.current.state === 'suspended') audioCtx.current.resume();};
 
     try {
       const {data} = await axios.get(process.env.REACT_APP_API_URL + '/getTextOneRandomForGuest', {});
@@ -96,7 +110,6 @@ function Home(props, ref) {
       });
 
       source.current.start(0);
-      // source.stop();
     } catch(err) {
       setIsPlayng(false);
       props.openCommAlert('Error', '음성 재생 실패.');
@@ -106,7 +119,7 @@ function Home(props, ref) {
   const playSoundDone = () => {
     playedCountRef.current = playedCountRef.current + 1;
     textIdxRef.current = playedCountRef.current === (toPlayCountRef.current / 2) ? 1 : textIdxRef.current + 1;
-    let millisec = playedCountRef.current === (toPlayCountRef.current / 2) ? interv.current : 0;
+    let millisec = playedCountRef.current === (toPlayCountRef.current / 2) ? interv.current : 400;
 
     if(playedCountRef.current === toPlayCountRef.current) {
       timer.current = setTimeout(() => play(), 1500);
@@ -117,7 +130,7 @@ function Home(props, ref) {
 
   const stopSound = () => {
     clearTimeout(timer.current);
-    audioCtx.current.close();
+    if(audioCtx.current.state !== 'closed') audioCtx.current.close();
     setIsPlayng(false);
   }
 
@@ -151,10 +164,19 @@ function Home(props, ref) {
   }
 
   const trySetMyText = () => {
+    if(localStorage.getItem('token') === null || localStorage.getItem('token') === undefined) {
+      props.openCommAlert('Error', '로그인 후 이용가능합니다.');
+      return;
+    }
+
+    if(textIdRef.current === null || textIdRef.current === undefined) {
+      props.openCommAlert('Error', '저장 할 문장이 없습니다.');
+      return;
+    }
+
     axios.post(process.env.REACT_APP_API_URL + '/setMyText', {
       token: localStorage.getItem('token'),
-      textKr: textKrState,
-      textEn : textEnState,
+      textId: textIdRef.current
     })
     .then((res) => {
       if(res.data.success === true) {
@@ -166,8 +188,6 @@ function Home(props, ref) {
           localStorage.clear();
 
           props.openCommAlert('Error', res.data.msg);
-
-          navigate('/login');
         } else {
           props.openCommAlert('Error', res.data.msg);
         }
@@ -223,8 +243,8 @@ function Home(props, ref) {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={textType.current}
-            onChange={(e) => textType.current(e.target.value)}
+            value={textTypeState}
+            onChange={(e) => setTextTypeState(e.target.value)}
             // label="Age"
           >
             <MenuItem value='SUGGEST'>제안</MenuItem>
@@ -269,7 +289,7 @@ function Home(props, ref) {
 
       <Box textAlign="right">
         <Button onClick={ trySetMyText } color="success" variant="contained" endIcon={<NoteAddIcon />}>
-          내 문장으로 저장
+          내 문장에 추가
         </Button>
         {btnWrite}
 
