@@ -20,8 +20,8 @@ function Home(props, ref) {
   const [textEnState, setTextEnState] = React.useState('Hello.');
   const [textTypeState, setTextTypeState] = React.useState('SUGGEST');
 
-  const trySetText = () => {
-    axios.post(process.env.REACT_APP_API_URL + '/setText', {
+  const insertText = () => {
+    axios.post(process.env.REACT_APP_API_URL + '/insertText', {
       token: localStorage.getItem('token'),
       token1: localStorage.getItem('token1'),
       textKr: textKrState,
@@ -88,7 +88,7 @@ function Home(props, ref) {
   const token1 = localStorage.getItem('token1');
   if (token1 === null || token1 === '') {
   } else {
-    btnWrite = <Button onClick={ trySetText } color="success" variant="contained" endIcon={<AddCircleOutlineIcon />}>
+    btnWrite = <Button onClick={ insertText } color="success" variant="contained" endIcon={<AddCircleOutlineIcon />}>
       신규등록
     </Button>
   }
