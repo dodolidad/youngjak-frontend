@@ -6,15 +6,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { deepOrange, green } from '@mui/material/colors';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import Avatar from '@mui/material/Avatar';
+// import Menu from '@mui/material/Menu';
+// import MenuItem from '@mui/material/MenuItem';
+// import ListItemIcon from '@mui/material/ListItemIcon';
+// import Divider from '@mui/material/Divider';
+// import PersonAdd from '@mui/icons-material/PersonAdd';
+// import AssignmentIcon from '@mui/icons-material/Assignment';
+// import { deepOrange, green } from '@mui/material/colors';
 import HomeIcon from '@mui/icons-material/Home';
 
 function Header(props, ref) {
@@ -22,12 +22,12 @@ function Header(props, ref) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   const tryLogout = () => {
     localStorage.clear();
@@ -37,11 +37,11 @@ function Header(props, ref) {
   // if(token === null || token === '')
 
   let btnLogInOut;
-  let btnJoin;
+  // let btnJoin;
   const token = localStorage.getItem('token');
   if (token === null || token === '') {
-    btnLogInOut = <Button onClick={() => navigate('/login')} color="inherit">로그인</Button>
-    btnJoin = <Button onClick={() => navigate('/join')} color="inherit">회원가입</Button>
+    btnLogInOut = <Button onClick={() => navigate('/login')} color="inherit">관리자 로그인</Button>
+    // btnJoin = <Button onClick={() => navigate('/join')} color="inherit">회원가입</Button>
   } else {
     btnLogInOut = <Button onClick={() => tryLogout()} color="inherit">로그아웃</Button>
   }
@@ -51,8 +51,15 @@ function Header(props, ref) {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+            {/* <Button onClick={() => navigate('/home')} startIcon={<HomeIcon />} color="inherit"></Button> */}
+            {/* <Avatar sx={{ bgcolor: deepOrange[400] }} variant="rounded">
+            <HomeIcon />
+          </Avatar> */}
+          {/* <Button variant="outlined" startIcon={<HomeIcon />}>
+            Delete
+          </Button> */}
             <IconButton
-              onClick={handleClick}
+              onClick={() => navigate('/')}
               size="large"
               edge="start"
               color="inherit"
@@ -62,18 +69,18 @@ function Header(props, ref) {
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
             >
-              <MenuIcon />
+              <HomeIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              youngjak.com
+              Youngjak.com
             </Typography>
-            {btnJoin}
+            {/* {btnJoin} */}
             {btnLogInOut}
             {/* <Button onClick={() => navigate('/login')} color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
       </Box>
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
@@ -125,7 +132,7 @@ function Header(props, ref) {
           </ListItemIcon>
           내 정보
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </React.Fragment>
   );
 }
